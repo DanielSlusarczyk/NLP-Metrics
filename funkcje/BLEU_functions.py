@@ -7,14 +7,14 @@ tabs = '\t\t\t\t'
 listOfNmbOfGrams = []
 listOfResults = []
 
-# Dzieli na listy wszystkie elementy listy
+# Dzielenie na listy wszystkich elementów listy
 def splitList(inputList):
     mainList = []
     for element in inputList:
         mainList.append(element.split())
     return mainList
 
-# Wyświetla informacje o tabeli
+# Wyświetlanie informacji o tabeli
 def describeTable(nRef):
     counter = 1
     print("n-GRAM" + tabs + "\t\t\tRef1", end='')
@@ -24,7 +24,7 @@ def describeTable(nRef):
 
     print("\tMax Ref Count" + "\tClip Count" + "\tContribution")
 
-# Definiuje liczbę rozpatrywanych n-gramów zależnie od przypisanych wag
+# Definiowanie liczby rozpatrywanych n-gramów zależnie od przypisanych wag
 def getNumberOfnGram(weights):
     n = len(weights)
     result = 0
@@ -35,7 +35,7 @@ def getNumberOfnGram(weights):
             result = i
     return result + 1
 
-# Zwraca liczbę wystąpień pattern w text - wyrażenia regularne
+# Zwracanie liczby wystąpień pattern w text - wyrażenia regularne
 def getNumberOfOccurance(pattern, text):
     # "pattern"
     number = re.findall("^" + pattern + "$", text)
@@ -47,7 +47,7 @@ def getNumberOfOccurance(pattern, text):
     number = number + re.findall(" " + pattern + "$", text)
     return len(number)
 
-# Tworzy z inputList listę bez duplikatów
+# Tworzenie z inputList listy bez duplikatów
 def makeUniqueList(inputList):
     unique_list = []
     for element in inputList:
@@ -55,7 +55,7 @@ def makeUniqueList(inputList):
             unique_list.append(element)
     return unique_list
 
-# Zwraca długość najdłuższej listy z listy
+# Zwracanie długość najdłuższej listy z listy
 def getMaxLengthOflist(inputList):
     size = len (inputList[0])
     for element in inputList:
@@ -63,26 +63,26 @@ def getMaxLengthOflist(inputList):
             size = len(element)
     return size
 
-# Oblicz karę za niedopasowanie długości
+# Obliczanie karę za niedopasowanie długości
 def lengthPenalty(refLength, canLength):
     result = math.exp(1-refLength/canLength)
     return result
 
-# Oblicz końcową wartość wyniku i wyświetla
+# Obliczanie końcowowej wartość wyniku i wyświetlanie
 def calculateResult(bp, weights):
     if(len(listOfResults) == len (listOfNmbOfGrams)):
         sumOfLog = 0
         print("\nBLUE [" + str(len(listOfNmbOfGrams)) + "] = " + "{:.3f}".format(bp) + " exp( ", end ='')
         
         for con in range(0, len(listOfResults)):
-            print( " ln( " + str(listOfResults[con]) + "/" + str(listOfNmbOfGrams[con]) + " )",end='')
+            print( str( weights[con]) + " ln( " + str(listOfResults[con]) + "/" + str(listOfNmbOfGrams[con]) + " )",end='')
             if(con != len(listOfResults) - 1):
-                print(" +", end = '')
+                print(" + ", end = '')
                 
             sumOfLog = sumOfLog + weights[con] * math.log(listOfResults[con]/listOfNmbOfGrams[con])
         print(" ) = " + str(bp * math.exp(sumOfLog)))
         
-        
+# Wypisywanie tabeli obrazującej proces obliczania metryki BLEU oraz obliczanie wpływu poszczególnych n-gramów.        
 def printTable(n, refNmb, candidate, references, canLength):        
     # Zmienne pomocnicze
     listOfNmbOfGrams.clear()
@@ -109,12 +109,12 @@ def printTable(n, refNmb, candidate, references, canLength):
             for idToAdd in range(1, ngram):
                 gram = gram + ' ' + unique_candidate[idOfPattern + idToAdd]
 
-            #Wypisanie początku wiersza tabeli
+            # Wypisanie początku wiersza tabeli
             print("{0:<4}".format(str(counter)+ ")"), end='')
             print("{0:<20}".format(gram), end='')
             print(tabs, end='')
 
-            #Zmienne dla konkretnego n-gramu:
+            # Zmienne dla konkretnego n-gramu:
             counter = counter + 1
             maxRefCount = 0
             count = 0
@@ -135,16 +135,16 @@ def printTable(n, refNmb, candidate, references, canLength):
             # Obliczanie wartości sumClipCount
             sumClipCount = sumClipCount + min(maxRefCount, count)
 
-            #Wypisywanie maxRefCount i Coun
+            # Wypisywanie maxRefCount i Coun
             if(idOfPattern != nmbOfGrams - 1):
                 print(str(maxRefCount) + '\t' + str(count) + '\t' + str(min(maxRefCount, count)))
             else:
                 print(str(maxRefCount) + '\t' + str(count) + '\t' + str(min(maxRefCount, count)), end ='')
 
-        #Zapisanie wkładu danego n-gramu do oceny
+        # Zapisanie wkładu danego n-gramu do oceny
         if(ngram == 1):
             listOfNmbOfGrams.append(canLength)
         else:
             listOfNmbOfGrams.append(nmbOfGrams)
         listOfResults.append(sumClipCount)
-        print("\t\t" + str(listOfResults[-1]) + "\\" + str(listOfNmbOfGrams[-1]) + "\n")
+        print("\t\t" + str(listOfResults[-1]) + "\\" + str(listOfNmbOfGrams[-1]) + "\n")    

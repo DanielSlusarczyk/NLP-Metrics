@@ -1,7 +1,7 @@
 # Wyrażenia regularne do wyszukiwania słów w tekście:
 import re
 
-# Zwraca liczbę wystąpień pattern w text - wyrażenia regularne
+# Zwracanie liczby wystąpień pattern w text - wyrażenia regularne
 def getNumberOfOccurance(pattern, text):
     # "pattern"
     number = re.findall("^" + pattern + "$", text)
@@ -15,7 +15,7 @@ def getNumberOfOccurance(pattern, text):
         return 1
     return 0
 
-# Tworzy z inputList listę bez duplikatów
+# Tworzenie z inputList listy bez duplikatów
 def makeUniqueList(inputList):
     unique_list = []
     for element in inputList:
@@ -23,6 +23,7 @@ def makeUniqueList(inputList):
             unique_list.append(element)
     return unique_list
 
+# Obliczanie miary Recall
 def calculateRecall(ngram, reference, candidate):
     # Zmienne pomocnicze
     unique_reference = makeUniqueList(reference)
