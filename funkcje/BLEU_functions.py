@@ -17,7 +17,7 @@ def splitList(inputList):
 # Wyświetlanie informacji o tabeli
 def describeTable(nRef):
     counter = 1
-    print("n-GRAM" + tabs + "\t\t\tRef1", end='')
+    print("{0:<50}".format("n-GRAM") + tabs + "Ref1", end='')
     for ref in range(1, nRef):
         counter = counter + 1
         print("\tRef" + str(counter), end='')
@@ -66,10 +66,13 @@ def getMaxLengthOflist(inputList):
 # Obliczanie karę za niedopasowanie długości
 def lengthPenalty(refLength, canLength):
     result = math.exp(1-refLength/canLength)
+    if(result > 1):
+        return 1
     return result
 
 # Obliczanie końcowowej wartość wyniku i wyświetlanie
 def calculateResult(bp, weights):
+    error = False
     if(len(listOfResults) == len (listOfNmbOfGrams)):
         sumOfLog = 0
         print("\nBLUE [" + str(len(listOfNmbOfGrams)) + "] = " + "{:.3f}".format(bp) + " exp( ", end ='')
@@ -78,9 +81,14 @@ def calculateResult(bp, weights):
             print( str( weights[con]) + " ln( " + str(listOfResults[con]) + "/" + str(listOfNmbOfGrams[con]) + " )",end='')
             if(con != len(listOfResults) - 1):
                 print(" + ", end = '')
+            try:    
+                sumOfLog = sumOfLog + weights[con] * math.log(listOfResults[con]/listOfNmbOfGrams[con])
+            except:
+                error = True
                 
-            sumOfLog = sumOfLog + weights[con] * math.log(listOfResults[con]/listOfNmbOfGrams[con])
         print(" ) = " + str(bp * math.exp(sumOfLog)))
+        if(error):
+            print("[Uwaga]Zerowa wartość wpływu n-gramu - rozważ zmianę wag")
         
 # Wypisywanie tabeli obrazującej proces obliczania metryki BLEU oraz obliczanie wpływu poszczególnych n-gramów.        
 def printTable(n, refNmb, candidate, references, canLength):        
@@ -111,7 +119,7 @@ def printTable(n, refNmb, candidate, references, canLength):
 
             # Wypisanie początku wiersza tabeli
             print("{0:<4}".format(str(counter)+ ")"), end='')
-            print("{0:<20}".format(gram), end='')
+            print("{0:<50}".format(gram), end='')
             print(tabs, end='')
 
             # Zmienne dla konkretnego n-gramu:
