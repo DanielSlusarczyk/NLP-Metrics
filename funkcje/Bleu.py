@@ -5,12 +5,14 @@ import math
 
 class Bleu:
 
-    def __init__(self, weights, references, candidate):
+    def __init__(self, weights, references, candidate, verbose = False):
         self.weights = weights
         self.references = references
-        self. candidate = candidate
+        self.candidate = candidate
         self.references = self.splitList(self.references)
         self.candidate = self.candidate.split()
+        self.verbose = verbose
+        self.error = False
         self.analizeData()
         self.prepareData()
         self.calculateBP()
@@ -53,10 +55,10 @@ class Bleu:
         return unique_list
 
     # Zwracanie długość najdłuższej listy z listy
-    def getMaxLengthOflist(self, inputList):
+    def getMinLengthOflist(self, inputList):
         size = len (inputList[0])
         for element in inputList:
-            if(size < len(element)):
+            if(size > len(element)):
                 size = len(element)
         return size
 
@@ -73,8 +75,8 @@ class Bleu:
         self.n = self.getNumberOfnGram()
         # Liczba referencji
         self.refNmb = len(self.references)
-        # Maksymalna długość wzorca
-        self.refMaxLength = self.getMaxLengthOflist(self.references)
+        # Minimalna długość wzorca
+        self.refMinLength = self.getMinLengthOflist(self.references)
         # Długość kandydata
         self.canLength = len(self.candidate)
         # Unikalne słowa kandydata 
@@ -142,33 +144,34 @@ class Bleu:
     # Obliczanie kary za niedopasowanie długości
     def calculateBP(self):
         self.canLength = len(self.candidate)
-        self.bp = math.exp(1-self.refMaxLength/self.canLength)
+        self.bp = math.exp(1-(self.refMinLength/self.canLength))
         if(self.bp > 1):
             self.bp = 1
     
     # Obliczanie końcowowej wartość wyniku
     def calculateResult(self):
-        error = False
         sumOfLogs = 0
         if(len(self.listOfResults) == len (self.listOfNmbOfGrams)):
             for con in range(0, len(self.listOfResults)):
                 try:
                     sumOfLogs = sumOfLogs + self.weights[con] * math.log(self.listOfResults[con]/self.listOfNmbOfGrams[con])
                 except:
-                    error = True
-            if(error):
-                print("[Uwaga]Zerowa wartość wpływu n-gramu - rozważ zmianę wag")
+                    if(self.verbose):
+                        print("[Uwaga]Zerowa wartość wpływu n-gramu - rozważ zmianę wag")
+                    self.error = True
+                    self.result = 0
+                    return
         self.result = self.bp * math.exp(sumOfLogs)
 
 
     def showAnalizedData(self):
-       self.printer.showAnalizedData()
+        self.printer.showAnalizedData()
 
     def showTable(self):
-       self.printer.showTable()
+        self.printer.showTable()
     
     def showBP(self):
-       self.printer.showBP()
+        self.printer.showBP()
     
     def showResult(self):
         self.printer.showResult()
@@ -189,7 +192,7 @@ class Printer:
     def showAnalizedData(self):
         print("{0:<50}".format("Liczba rozpatrywanych n-gramów: ")                  + str(self.bleu.n))
         print("{0:<50}".format("Liczba tłumaczeń referencyjnych (wzorcowych): ")    + str(self.bleu.refNmb))
-        print("{0:<50}".format("Maksymalna długość wzorca: ")                       + str(self.bleu.refMaxLength))
+        print("{0:<50}".format("Maksymalna długość wzorca: ")                       + str(self.bleu.refMinLength))
         print("{0:<50}".format("Maksymalna długość kandydata: ")                    + str(self.bleu.canLength))
         print("{0:<50}".format("Tłumaczenie kandydujące: ")                         + str(self.bleu.candidate))
         print("{0:<50}".format("Tłumaczenie kandydujące bez powtórzeń: ")           + str(self.bleu.unique_candidate))
@@ -219,7 +222,7 @@ class Printer:
         print("\n")
 
     def showBP(self):
-        print("Maksymalna długość tłumaczenia wzorcowego: "     + str(self.bleu.refMaxLength))
+        print("Maksymalna długość tłumaczenia wzorcowego: "     + str(self.bleu.refMinLength))
         print("Długość tłumaczenia kandydującego: "             + str(self.bleu.canLength))
         print("BP: "                                            + str(self.bleu.bp) + "\n")
     
