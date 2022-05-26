@@ -1,7 +1,17 @@
+# Wyrażenia regularne do wyszukiwania słów w tekście:
 import re
 # Obliczanie funkcji ekspotencjalnej i logarytmów:
 import math
-# Wyrażenia regularne do wyszukiwania słów w tekście:
+# Znaki interpunkcyjne
+import string
+
+# Usuwanie znaków interpunkcyjnych ze zdania
+def deletePunctuation(sentence):
+    newSentence = ""
+    for character in sentence:
+        if (character not in string.punctuation):
+            newSentence = newSentence + character
+    return newSentence
 
 class Bleu:
 
@@ -13,6 +23,7 @@ class Bleu:
         self.candidate = self.candidate.split()
         self.verbose = verbose
         self.error = False
+        
         self.analizeData()
         self.prepareData()
         self.calculateBP()
@@ -28,7 +39,7 @@ class Bleu:
         n = len(self.weights)
         result = 0
         for i in range(1, n):
-            if( self.weights[i - 1] == 0 ):
+            if(self.weights[i - 1] == 0):
                 break
             else:
                 result = i
@@ -121,6 +132,7 @@ class Bleu:
                 for idToAdd in range(1, ngram):
                     gram = gram + ' ' + uniqueCandidate[idOfPattern + idToAdd]
                 
+                # Nierozpatrywanie kilka razy tego samego n-gramu
                 if(gram in self.listOfNGrams):
                     continue
                     

@@ -27,6 +27,9 @@ def test(coco, cocoRes, evals, weights):
         anns = cocoRes.loadAnns(annIds)
         candidate = anns[0]['caption']
 
+        candidate = deletePunctuation(candidate)
+        references = [deletePunctuation(ref) for ref in references]
+        
         # Własna implementacja
         bleu = Bleu(weights, references, candidate)
         codeBleu = round(bleu.result, 4)
@@ -41,6 +44,7 @@ def test(coco, cocoRes, evals, weights):
 
         res1.append(abs(codeBleu - nltkBleu))
         res2.append(abs(codeBleu - cocoBleu))
+
 
     
     fig, (ax1,ax2) = plt.subplots(1,2,figsize=(30,10))
