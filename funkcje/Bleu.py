@@ -61,13 +61,25 @@ class Bleu:
             if(size > len(element)):
                 size = len(element)
         return size
+    
+    def getIndexOfMin(self, inputList):
+        index = 0
+        minValue = inputList[0]
+        for i in range(0, len(inputList)):
+            if(abs(inputList[i]) <= abs(minValue)):
+                if(abs(inputList[i]) != abs(minValue)):
+                    minValue = inputList[i]
+                    index = i
+                else:
+                    if(inputList[i] < minValue):
+                        minValue = inputList[i]
+                        index = i
+        return index
 
-    # Obliczanie karę za niedopasowanie długości
-    def lengthPenalty(self, refLength, canLength):
-        result = math.exp(1-refLength/canLength)
-        if(result > 1):
-            return 1
-        return result
+    # Zwracanie najbardziej zbliżonej długości do kandydata wśród referencji
+    def getClosestLength(self):
+        referenceLengths = [len(ref) - len(self.candidate) for ref in self.references]
+        return len(self.candidate) + referenceLengths[self.getIndexOfMin(referenceLengths)]
 
     # Analiza otrzymanych danych
     def analizeData(self):
@@ -75,12 +87,12 @@ class Bleu:
         self.n = self.getNumberOfnGram()
         # Liczba referencji
         self.refNmb = len(self.references)
-        # Minimalna długość wzorca
-        self.refMinLength = self.getMinLengthOflist(self.references)
+        # Najbliższa długość wzorca
+        self.refMinLength = self.getClosestLength()
         # Długość kandydata
         self.canLength = len(self.candidate)
         # Unikalne słowa kandydata 
-        self.unique_candidate = self.makeUniqueList(self.candidate)
+        self.uniqueCandidate = self.makeUniqueList(self.candidate)
       
     def prepareData(self):        
         # Zmienne pomocnicze
@@ -88,7 +100,7 @@ class Bleu:
         self.listOfResults = []
         self.data = []
         self.listOfNGrams = []
-        unique_candidate = self.makeUniqueList(self.candidate)
+        uniqueCandidate = self.makeUniqueList(self.candidate)
 
         # Pętla po liczbie n (liczbie rozpatrywanych n-gramów)
         for ngram in range(1, self.n + 1):
@@ -97,18 +109,21 @@ class Bleu:
             sumClipCount = 0
             # Liczba n-gramów:
             if(ngram > 1):
-                unique_candidate = self.candidate
-            nmbOfGrams = len(unique_candidate) - ngram + 1
+                uniqueCandidate = self.candidate
+            nmbOfGrams = len(uniqueCandidate) - ngram + 1
 
             # Pętla po liczbie n-gramów zależna od rozpatrywanego n-gramu
             for idOfPattern in range(0, nmbOfGrams):
                 dataLine = []
 
-                gram = unique_candidate[idOfPattern]
+                gram = uniqueCandidate[idOfPattern]
                 # Pętla po liczbie słów do dodania aby otrzymać n-gram
                 for idToAdd in range(1, ngram):
-                    gram = gram + ' ' + unique_candidate[idOfPattern + idToAdd]
+                    gram = gram + ' ' + uniqueCandidate[idOfPattern + idToAdd]
                 
+                if(gram in self.listOfNGrams):
+                    continue
+                    
                 self.listOfNGrams.append(gram)
                 # Zmienne dla konkretnego n-gramu:
                 maxRefCount = 0
@@ -163,7 +178,6 @@ class Bleu:
                     return
         self.result = self.bp * math.exp(sumOfLogs)
 
-
     def showAnalizedData(self):
         self.printer.showAnalizedData()
 
@@ -195,7 +209,7 @@ class Printer:
         print("{0:<50}".format("Maksymalna długość wzorca: ")                       + str(self.bleu.refMinLength))
         print("{0:<50}".format("Maksymalna długość kandydata: ")                    + str(self.bleu.canLength))
         print("{0:<50}".format("Tłumaczenie kandydujące: ")                         + str(self.bleu.candidate))
-        print("{0:<50}".format("Tłumaczenie kandydujące bez powtórzeń: ")           + str(self.bleu.unique_candidate))
+        print("{0:<50}".format("Tłumaczenie kandydujące bez powtórzeń: ")           + str(self.bleu.uniqueCandidate))
         print("\n")
 
     def showTable(self):
@@ -222,7 +236,7 @@ class Printer:
         print("\n")
 
     def showBP(self):
-        print("Maksymalna długość tłumaczenia wzorcowego: "     + str(self.bleu.refMinLength))
+        print("Najbliższa długość tłumaczenia wzorcowego: "     + str(self.bleu.refMinLength))
         print("Długość tłumaczenia kandydującego: "             + str(self.bleu.canLength))
         print("BP: "                                            + str(self.bleu.bp) + "\n")
     

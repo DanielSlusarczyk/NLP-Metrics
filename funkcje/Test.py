@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 def test(coco, cocoRes, evals, weights):
     warnings.filterwarnings('ignore')
     nmbOfTests = len(evals)
-    epsilon = 0.06
     
     # codeBleu - ntlkBleu
     res1 = []
@@ -28,27 +27,27 @@ def test(coco, cocoRes, evals, weights):
         anns = cocoRes.loadAnns(annIds)
         candidate = anns[0]['caption']
 
+        # Własna implementacja
         bleu = Bleu(weights, references, candidate)
-        codeBleu = bleu.result
+        codeBleu = round(bleu.result, 4)
         
-        cocoBleu = evals[test]["Bleu_" + str(len(weights))]
-
+        # COCO
+        cocoBleu = round(evals[test]["Bleu_" + str(len(weights))], 4)
+        
+        # NTLK
         candidate = candidate.split()
         references = [ref.split() for ref in references]
-        ntlkBleu = BLEU.sentence_bleu(references, candidate, weights, smoothing_function=None)
+        nltkBleu = round(BLEU.sentence_bleu(references, candidate, weights, smoothing_function=None), 4)
 
-        res1.append(abs(codeBleu - ntlkBleu))
-        
-        if(abs(codeBleu - cocoBleu) > epsilon):
-            res2.append(abs(codeBleu - cocoBleu))
-        else:
-            res2.append(0)
+        res1.append(abs(codeBleu - nltkBleu))
+        res2.append(abs(codeBleu - cocoBleu))
+
     
     fig, (ax1,ax2) = plt.subplots(1,2,figsize=(30,10))
     fig.suptitle('Test dla ' + str(nmbOfTests) + ' danych', fontsize=30)
     
     ax1.hist(res1, align="left")
-    ax1.set_title('|Moje Bleu - ntlk Bleu|', fontsize=25)
+    ax1.set_title('|Implementacja Bleu - NLTK Bleu|', fontsize=25)
     
     ax2.hist(res2, align="left")
     ax2.set_title('|Moje Bleu - coco Bleu|', fontsize=25)
