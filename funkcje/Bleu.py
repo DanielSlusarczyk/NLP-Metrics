@@ -207,7 +207,7 @@ class Printer:
     def __init__(self, bleu):
         self.bleu = bleu
         # 5 | 50 | 10 | ... | 10 | 10 | 10 | 30
-        self.col1 = "{0:<5}"            # Kolumna liczba porządkowych
+        self.col1 = "{0:<5}"            # Kolumna liczb porządkowych
         self.col2 = "{0:<50}"           # Kolumna n-gramów
         self.col3 = "{0:<10}"           # Kolumna poszczególnych zdań referencyjnych
         self.col4 = "{0:<10}"           # Kolumna Max Ref
