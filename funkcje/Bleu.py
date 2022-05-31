@@ -229,10 +229,14 @@ class Printer:
         self.showData()
     
     def showHeadline(self):
-        self.printt(self.col1.format("Lp") + self.col2.format("n-GRAM"))
+        self.printt(self.col1.format("Lp"))
+        self.printt(self.col2.format("n-GRAM"))
         for ref in range(0, self.bleu.refNmb):
             self.printt(self.col3.format("Ref" + str(ref + 1)))
-        print(self.col4.format("Max Ref") + self.col5.format("Count") + self.col6.format("Clip Count") + self.col7.format("Contribution"))
+        self.printt(self.col4.format("Max Ref"))
+        self.printt(self.col5.format("Count"))
+        self.printt(self.col6.format("Clip Count"))
+        print(self.col7.format("Contribution"))
 
     def showData(self):
         n = 0
@@ -262,10 +266,14 @@ class Printer:
         print(" ) = " + str(self.bleu.result))       
     
     def printDataLine(self, lp, gram, dataLine, contribution = ''):
-        self.printt(self.col1.format(str(lp) + ")") + self.col2.format(gram))
+        self.printt(self.col1.format(str(lp) + ")"))
+        self.printt(self.col2.format(gram))
         for ref in range(0, self.bleu.refNmb):
             self.printt(self.col3.format(dataLine[ref]))
-        print(self.col4.format(dataLine[-3]) + self.col5.format(dataLine[-2]) + self.col6.format(dataLine[-1]) + self.col7.format(contribution))
+        self.printt(self.col4.format(dataLine[-3]))
+        self.printt(self.col5.format(dataLine[-2]))
+        self.printt(self.col6.format(dataLine[-1]))
+        print(self.col7.format(contribution))
 
     def printt(self, text):
         print(text, end='' )

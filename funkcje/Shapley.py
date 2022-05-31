@@ -94,7 +94,7 @@ class Printer:
 
     def __init__(self, shapley):
         self.shapley = shapley
-        # 5 | 50 | 10 | ... | 10 | 10 | 10 | 30
+        # 5 | 30 | 20 | 20 | 20 | 20
         self.col1 = "{0:<5}"            # Kolumna liczb porządkowych
         self.col2 = "{0:<30}"           # Kolumna kombinacji
         self.col3 = "{0:<20}"           # Kolumna wartości bez gracza
