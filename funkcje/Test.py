@@ -44,8 +44,6 @@ def test(coco, cocoRes, evals, weights):
 
         res1.append(abs(codeBleu - nltkBleu))
         res2.append(abs(codeBleu - cocoBleu))
-
-
     
     fig, (ax1,ax2) = plt.subplots(1,2,figsize=(30,10))
     fig.suptitle('Test dla ' + str(nmbOfTests) + ' danych', fontsize=30)

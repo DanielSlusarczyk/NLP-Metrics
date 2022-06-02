@@ -55,20 +55,23 @@ class ShapleyValue:
             self.listOfTeamsWithPlayer.append(self.calValue(newPlayers))
 
             # Wkład marginalny
+            # Różnica pomiędzy wartością funkcji koalicyjnej z analizowanym graczem i bez analizowanego gracza
             self.listOfMarCon.append(self.listOfTeamsWithPlayer[-1] - self.listOfTeamsWithoutPlayer[-1])
 
             # Wartość shapleya dla koalicji
             self.listOfSV.append(self.calShapleyValue(len(self.listOfNewPlayers[-1]) - 1, n, self.listOfMarCon[-1]))
             
-            #Wynik
+            # Wynik
             self.result = sum(self.listOfSV)
             self.relativeResult = round((sum(self.listOfSV)/self.calValue(self.players)) * 100, 2)
 
-    # Obliczanie wartości zbioru graczy players - funkcja koalicyjna    
+    # Obliczanie wartości zbioru graczy players - funkcja koalicyjna
+    # Wzór zdefiniowany w przykładzie - kwadrat sumy graczy
     def calValue(self, players):
         return pow(sum(players), 2)
 
-    # Obliczanie wartości Shaplya zgodnie ze wzorem
+    # Obliczanie wartości Shapleya zgodnie ze wzorem dla jednego przypadku i
+    # SV_i = ( ( |S_i|! (n - |S_i| - 1)! )/n! ) * WkładMarginalny dla przypadku i
     def calShapleyValue(self, S, n, marInflu):
         return((self.calFactorial(S) * self.calFactorial(n - S - 1))/self.calFactorial(n)) * marInflu
 
@@ -83,10 +86,11 @@ class ShapleyValue:
         x = self.subsets(numbers[1:])
         return x + [[numbers[0]] + y for y in x]
  
-    # Zwracającanie listy podzbiorów zbioru numbers o rozmiarze n
+    # Zwracanie listy podzbiorów zbioru numbers o rozmiarze n
     def subsetsOfGivenSize(self, numbers, n):
         return [x for x in self.subsets(numbers) if len(x) == n]
     
+    # Wyświetlanie poszczególnych przypadków w formie tabeli
     def showTable(self):
         self.printer.showTable()
         

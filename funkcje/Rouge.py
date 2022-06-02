@@ -7,21 +7,21 @@ class Rouge:
         self.candidate = candidate.split()
         self.reference = reference.split()
         self.ngram = ngram
-
         self.sumOfGram = 0
         self.nmbOfGrams = 0
         self.nmbOfCandidateGrams = 0
         self.lcs = 0
         self.listOfNGrams = []
         self.listOfOccurance = []
+        self.printer = Printer(self)
 
+        # Wyniki:
         self.recall = 0
         self.precision = 0
         self.f1 = 0
         self.recallL = 0
         self.precisionL = 0
         self.f1L = 0
-        self.printer = Printer(self)
 
         self.prepareNGram()
         self.longestCommonSubsequence(self.candidate, self.reference)
@@ -29,8 +29,7 @@ class Rouge:
         self.calculatePrecision()
         self.calculateF1()
 
-
-    # Zwracanie liczby wystąpień pattern w text - wyrażenia regularne
+    # Zwracanie wystąpienia pattern w text - wyrażenia regularne
     def getNumberOfOccurance(self, pattern, text):
         # "pattern"
         number = re.findall("^" + pattern + "$", text)
@@ -89,17 +88,26 @@ class Rouge:
             self.listOfOccurance.append(gramOccurrances)
 
 
-    # Obliczanie miary Recall
+    # Obliczanie miary Recall dla Rouge-N i Rouge-L
+    # Rouge - N:
+    # recall - stosunek liczby dopasowanych n-gramów do liczby wszystkich n-gramów referencji
+    # Rouge - L:
+    # recall - stosunek NWP do liczby wszystkich n-gramów referencji
     def calculateRecall(self):
         self.recallL = self.lcs/len(self.makeUniqueList(self.reference))
         self.recall = self.sumOfGram/self.nmbOfGrams
 
-    # Obliczanie miary Precision
+    # Obliczanie miary Precision dla Rouge-N i Rouge-L
+    # Rouge - N:
+    # precision - stosunek liczby dopasowanych n-gramów do liczby wszystkich n-gramów kandydata
+    # Rouge - L:
+    # precision - stosunek liczby NWP do liczby 
     def calculatePrecision(self):
         self.precisionL = self.lcs/len(self.makeUniqueList(self.candidate))
         self.precision = self.sumOfGram/self.nmbOfCandidateGrams
 
-    # Obliczanie miary F1 Score
+    # Obliczanie miary F1 Score dla Rouge-N i Rouge-L
+    # Miara jest obliczana zgodnie ze wzorem, ale z uwzględnieniem obliczania recall i precision zależnie od rodzaju metryki Rouge
     def calculateF1(self):
         self.f1L = 2 * (self.recallL * self.precisionL)/(self.precisionL + self.recallL)
         self.f1 = 2 * (self.recall * self.precision)/(self.precision + self.recall)

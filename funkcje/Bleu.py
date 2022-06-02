@@ -73,6 +73,9 @@ class Bleu:
                 size = len(element)
         return size
     
+    # Zwracanie indeksu najmniejszej co do modułu wartości z inputList
+    # W przypadku tych samych wartości modułu wybierana jest wartość mniejsza bez modułu
+    # Powyższy warunek jest konieczny, aby rozpatrywać wartość BP na korzyść kandydata 
     def getIndexOfMin(self, inputList):
         index = 0
         minValue = inputList[0]
@@ -88,6 +91,7 @@ class Bleu:
         return index
 
     # Zwracanie najbardziej zbliżonej długości do kandydata wśród referencji
+    # Wartość r we wzorze na BP
     def getClosestLength(self):
         referenceLengths = [len(ref) - len(self.candidate) for ref in self.references]
         return len(self.candidate) + referenceLengths[self.getIndexOfMin(referenceLengths)]
@@ -133,6 +137,7 @@ class Bleu:
                     gram = gram + ' ' + uniqueCandidate[idOfPattern + idToAdd]
                 
                 # Nierozpatrywanie kilka razy tego samego n-gramu
+                # Przypadek możliwy do wystąpienia w przypadku n-gramów dla n > 1
                 if(gram in self.listOfNGrams):
                     continue
                     
@@ -169,17 +174,28 @@ class Bleu:
             self.listOfResults.append(sumClipCount)
     
     # Obliczanie kary za niedopasowanie długości
+    # Implementacja wzoru kary za zwięzłość
+    # BP = e^(1-(r/c))
+    # BP > 1 ? 1 : BP
     def calculateBP(self):
         self.canLength = len(self.candidate)
         self.bp = math.exp(1-(self.refMinLength/self.canLength))
+        
         if(self.bp > 1):
             self.bp = 1
     
     # Obliczanie końcowowej wartość wyniku
+    # Implementacja końcowe wartości wyniku
+    # BLEU = BP * ( w_1 * ln( contribution_1 ) + w_2 * ln( contribution_2 ) + ... * w_n * ln( contribution_n ))
+    # gdzie:
+    # contribution_n - wpływ danego n-gramu - stosunek dopasowanych n-gramów do wszystkich n-gramów
+    #
+    # Error jeśli contribution_i = 0 dla 1<= i <= n
     def calculateResult(self):
         sumOfLogs = 0
         if(len(self.listOfResults) == len (self.listOfNmbOfGrams)):
             for con in range(0, len(self.listOfResults)):
+                
                 try:
                     sumOfLogs = sumOfLogs + self.weights[con] * math.log(self.listOfResults[con]/self.listOfNmbOfGrams[con])
                 except:
@@ -190,15 +206,19 @@ class Bleu:
                     return
         self.result = self.bp * math.exp(sumOfLogs)
 
+    # Wyświetlanie istotnych informacji o wczytananych danych
     def showAnalizedData(self):
         self.printer.showAnalizedData()
 
+    # Wyświetlanie tabeli n-gramów
     def showTable(self):
         self.printer.showTable()
     
+    # Wyświetlanie kary za zwięzłość i sposobu policzenia
     def showBP(self):
         self.printer.showBP()
     
+    # Wyświetlanie ostatecznego wyniku i sposobu policzenia
     def showResult(self):
         self.printer.showResult()
 
@@ -218,7 +238,7 @@ class Printer:
     def showAnalizedData(self):
         print("{0:<50}".format("Liczba rozpatrywanych n-gramów: ")                  + str(self.bleu.n))
         print("{0:<50}".format("Liczba tłumaczeń referencyjnych (wzorcowych): ")    + str(self.bleu.refNmb))
-        print("{0:<50}".format("Maksymalna długość wzorca: ")                       + str(self.bleu.refMinLength))
+        print("{0:<50}".format("Najbardziej zbliżona długość wzorca do kandydata: ")+ str(self.bleu.refMinLength))
         print("{0:<50}".format("Maksymalna długość kandydata: ")                    + str(self.bleu.canLength))
         print("{0:<50}".format("Tłumaczenie kandydujące: ")                         + str(self.bleu.candidate))
         print("{0:<50}".format("Tłumaczenie kandydujące bez powtórzeń: ")           + str(self.bleu.uniqueCandidate))
