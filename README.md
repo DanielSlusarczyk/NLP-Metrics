@@ -29,19 +29,39 @@ Teoretyczne przedstawienie wartości shapleya, zastosowanie wartość shapleya w
 Przedstawienie zbioru COCO i jego zastosowania. Użycie zbioru do przeprowadzenia analizy poprawności wyników własnej implementacji BLEU.
 
 ## Użycie Przygotowanej Implementacji (Python 3.0)
-Kody źródłowe poszczególnych implementacji znajdują się w folderze: "funkcje". Omawiane poniżej przykłady zostałe opracowane w podejściu obiektowym.
+Kody źródłowe poszczególnych implementacji znajdują się w folderze: "funkcje". Omawiane poniżej przykłady zostałe opracowane w podejściu obiektowym. Dodatkowo, w dokumencie "Projekt.ipynb" znajduje się wiele przykładów użycia poniższych metod.
+
 ### BLEU - Bleu.py
 Tworzenie nowego obiektu:
   - bleu = Bleu(weights, references, candidate)
 
-Wyświetlenie analizy wczytanych danych:
+Wypisanie analizy wczytanych danych:
   - bleu.showAnalizedData()
 
-Wyświetlenie tabeli z analizą poszczególnych n-gramów:
+Wypisanie tabeli z analizą poszczególnych n-gramów:
   - bleu.showTable()
   
-Wyświetlenie kary za niedopasowanie długości (z ang. Brevity Penalty):
+Wypisanie kary za niedopasowanie długości (z ang. Brevity Penalty):
   - bleu.showBP()
 
-Wyświetlenie końcowego wyniku i gotowego podstawienia do wzoru:
+Wypisanie końcowego wyniku i gotowego podstawienia do wzoru:
   - bleu.showResult()
+
+### ROUGE - Rouge.py
+Tworzenie nowego obiektu dla ROUGE-N:
+  - rouge = Rouge(candidate, reference, ngram)
+
+Wypisanie miary Recall z listą n-gramów użytych do analizy i sposobu obliczenia:
+  - rouge.showRecall()
+
+Wypisanie miary Precision z listą n-gramów użytych do analizy i sposobu obliczenia:
+  - rouge.showPrecision()
+
+Wypisanie miary F1 Score (Rouge - N) ze sposobem obliczania:
+  - rouge.showRouge()
+
+Tworzenie nowego obiektu dla ROUGE-L:
+  - rouge = Rouge(candidate, reference)
+
+Wypisanie miary ROUGE-L z miarą recall, precision i F1 Score zgodnej z warientem ROUGE-L
+  - rouge.showRougeL()
