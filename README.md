@@ -22,8 +22,26 @@ Celem projektu było opracowanie teoretyczne metryk znajdujących zastosowanie w
 - SPICE - Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki
 
 ### Macierz Pomyłek
-Teoretyczne przedstawienie macierzy pomyłek, sposób odczytania najważniejszy miar bezpośrednio z macierzy pomyłek, zastosowanie macierzy pomyłek w problemach z większą ilościa klas.
+Teoretyczne przedstawienie macierzy pomyłek, sposób odczytywania najważniejszych miar bezpośrednio z macierzy pomyłek, zastosowanie macierzy pomyłek w problemach z większą ilościa klas.
 ### Wartości Shapleya
 Teoretyczne przedstawienie wartości shapleya, zastosowanie wartość shapleya w problemach uczenia maszynowego, przykłady obliczania wartości, gotowy pakiet umożliwiający analizę zbioru. Sekcja ta zawiera również gotową implementację liczenia wartości shapleya dla przykładowego problemu, który ułatwia zrozumienie tematyki.
 ### Zbiór COCO
 Przedstawienie zbioru COCO i jego zastosowania. Użycie zbioru do przeprowadzenia analizy poprawności wyników własnej implementacji BLEU.
+
+## Użycie Przygotowanej Implementacji - Python 3.0
+Kody źródłowe poszczególnych implementacji znajdują się w folderze: "funkcje". Omawiane poniżej przykłady zostałe opracowane w podejściu obiektowym.
+### BLEU - Bleu.py
+Tworzenie nowego obiektu:
+  bleu = Bleu(weights, references, candidate)
+
+Wyświetlenie analizy wczytanych danych:
+  bleu.showAnalizedData()
+
+Wyświetlenie tabeli z analizą poszczególnych n-gramów:
+  bleu.showTable()
+  
+Wyświetlenie kary za niedopasowanie długości (z ang. Brevity Penalty):
+  bleu.showBP()
+
+Wyświetlenie końcowego wyniku i gotowego podstawienia do wzoru:
+  bleu.showResult()
