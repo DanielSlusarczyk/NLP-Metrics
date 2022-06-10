@@ -73,8 +73,10 @@ Tworzenie nowego obiektu dla wartości shapleya:
 Wypisanie tabeli z pełną analizą dla 'player' w zbiorze 'players'
   - sv.showTable()
 
+<sub>
 Lp   Kombinacja                    Wartość bez gracza  Wartość z graczem   Wkład marginalny    Wartość Shapleya    
 1)   [1]                           0                   1                   1                   0.33                
 2)   [3, 1]                        9                   16                  7                   1.17                
 3)   [2, 1]                        4                   9                   5                   0.83                
-4)   [2, 3, 1]                     25                  36                  11                  3.67 
+4)   [2, 3, 1]                     25                  36                  11                  3.67    
+</sub>
