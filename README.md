@@ -7,7 +7,7 @@ Repozytorium _Projekt Indywidualny_ jest wynikiem pracy przeprowadzanej przez ca
 ## Cel Projektu
 Celem projektu było opracowanie teoretyczne metryk znajdujących zastosowanie w ewaluacji napisów, oraz innych narzędzi do analizy NLP. Praca porusza również takie zagadnienia jak: szczegółowe działanie poszczególnych metryk, gotowe pakiety języka programowania Python 3.0 znajdujące zastosowanie w omawianej tematyce i inne aspekty związane z danymi narzędziami.
 
-## Poruszana Tematyka
+## Problematyka
 ### Metryki:
 - BLEU - Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki. Dodatkowo została przygotowana przykładowa implementacja obliczania metryki BLEU dla zdań referencyjnych i zdania ocenianego, której celem jest wizualizacja sposobu obliczania poszczególnych wartości.
 
