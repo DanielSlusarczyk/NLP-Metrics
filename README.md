@@ -63,5 +63,18 @@ Wypisanie miary F1 Score (Rouge - N) ze sposobem obliczania:
 Tworzenie nowego obiektu dla ROUGE-L:
   - rouge = Rouge(candidate, reference)
 
-Wypisanie miary ROUGE-L z miarą recall, precision i F1 Score zgodnej z warientem ROUGE-L
+Wypisanie miary ROUGE-L z miarą recall, precision i F1 Score zgodnej z wariantem ROUGE-L
   - rouge.showRougeL()
+
+### Wartości Shapleya - Shapley.py
+Tworzenie nowego obiektu dla wartości shapleya:
+  - sv = ShapleyValue(players, player)
+
+Wypisanie tabeli z pełną analizą dla 'player' w zbiorze 'players'
+  - sv.showTable()
+
+Lp   Kombinacja                    Wartość bez gracza  Wartość z graczem   Wkład marginalny    Wartość Shapleya    
+1)   [1]                           0                   1                   1                   0.33                
+2)   [3, 1]                        9                   16                  7                   1.17                
+3)   [2, 1]                        4                   9                   5                   0.83                
+4)   [2, 3, 1]                     25                  36                  11                  3.67 
