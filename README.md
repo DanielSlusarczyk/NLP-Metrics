@@ -1,5 +1,5 @@
 # Projekt Indywidualny
-Repozytorium _Projekt Indywidualny_ jest wynikiem pracy przeprowadzanej przez cały semestr 2022L w ramach przedmiotu projektowego. Początek realizacji projektu przypada na: 02.03.2022, zaś koniec: 07.06.2022.
+Repozytorium _Projekt Indywidualny_ jest wynikiem pracy przeprowadzanej przez cały semestr 2022L w ramach przedmiotu projektowego. Początek realizacji projektu przypada na: 02.03.2022, a koniec: 07.06.2022.
 
 ### Autor: Daniel Ślusarczyk
 ### Opiekun projektu: mgr inż. Mateusz Bartosiewicz
