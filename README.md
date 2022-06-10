@@ -9,16 +9,21 @@ Celem projektu było opracowanie teoretyczne metryk znajdujących zastosowanie w
 
 ## Poruszana Tematyka
 ### Metryki:
-- BLEU__
+- BLEU
 Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki. Dodatkowo została przygotowana przykładowa implementacja obliczania metryki BLEU dla zdań referencyjnych i zdania ocenianego, której celem jest wizualizacja sposobu obliczania poszczególnych wartości.
+<br />
 - METEOR__
 Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki.
+<br />
 - ROUGE (ROUGE-N i ROUGE-L)
 Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki. Dodatkowo sekcja ta zawiera przykładową implementację obliczania metryki, która pozwala obliczyć wynik dla zdania ocenianego i jednego zdania referencyjnego.
+<br />
 - WMD__
 Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki
+<br />
 - CIDEr__
 Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki
+<br />
 - SPICE__
 Opis danej metryki, działanie, problemy, zastosowanie dla języka polskiego, przykłady obliczenia metryki
 ### Macierz Pomyłek
